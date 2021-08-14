@@ -26,7 +26,8 @@ __all__ = ['Analyzer', 'snapshot', 'age_histogram', 'daily_age_stats', 'daily_st
 
 class Analyzer(sc.prettyobj):
     '''
-    Base class for analyzers. Based on the Intervention class. Analyzers are used
+    Base class for analyzers (Interface classs for all other types of analyzers like Fit, snapshot, etc). 
+    Based on the Intervention class. Analyzers are used
     to provide more detailed information about a simulation than is available by
     default -- for example, pulling states out of sim.people on a particular timestep
     before it gets updated in the next timestep.
@@ -132,6 +133,35 @@ def validate_recorded_dates(sim, requested_dates, recorded_dates, die=True):
         else:
             print(errormsg)
     return
+
+
+class AnalyzerFactory:
+    '''
+    Factory class and method to pass the objects through factory creation method 
+    instead of directly to hide the code of the concrete classes from the client.
+    '''
+    def getAnalyzer(input, self, args, **kwargs):
+        ss = "snapshot"
+        ah = "age_histogram"
+        das = "daily_age_stats"
+        ds = "daily_stats"
+        fit = "fit"
+        cal = "Calibration"
+        tt = "TransTree"
+        if input == ss:
+            return Analyzer.snapshot(self, *args, **kwargs)
+        elif input == ah:
+            return Analyzer.age_histogram(self, *args, **kwargs)
+        elif input == das:
+            return Analyzer.daily_age_status(self, *args, **kwargs)
+        elif input == ds:
+            return Analyzer.daily_stats(self, *args, **kwargs)
+        elif input == fit:
+            return Analyzer.snapshot(self, *args, **kwargs)
+        elif input == cal:
+            return Analyzer.Calibration(self, *args, **kwargs)
+        elif input == tt:
+            return Analyzer.TransTree(self, *args, **kwargs)
 
 
 

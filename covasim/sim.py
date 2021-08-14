@@ -1147,7 +1147,7 @@ class Sim(cvb.BaseSim):
             fit = sim.compute_fit()
             fit.plot()
         '''
-        self.fit = cva.Fit(self, *args, **kwargs)
+        self.fit = cva.AnalyzerFactory.getAnalyzer("fit", self, *args, **kwargs)
         return self.fit
 
 
@@ -1170,7 +1170,7 @@ class Sim(cvb.BaseSim):
             calib = sim.calibrate(calib_pars, n_trials=50)
             calib.plot()
         '''
-        calib = cva.Calibration(sim=self, calib_pars=calib_pars, **kwargs)
+        calib = cva.AnalyzerFactory.getAnalyzer("Calibration", sim=self, calib_pars=calib_pars, **kwargs)
         calib.calibrate()
         return calib
 
@@ -1195,7 +1195,7 @@ class Sim(cvb.BaseSim):
             agehist = sim.make_age_histogram()
             agehist.plot()
         '''
-        agehist = cva.age_histogram(sim=self, *args, **kwargs)
+        agehist = cva.AnalyzerFactory.getAnalyzer("age_histogram", sim=self, *args, **kwargs)
         if output:
             return agehist
         else: # pragma: no cover
@@ -1219,7 +1219,7 @@ class Sim(cvb.BaseSim):
             sim.run()
             tt = sim.make_transtree()
         '''
-        tt = cva.TransTree(self, *args, **kwargs)
+        tt = cva.AnalyzerFactory.getAnalyzer("TransTree", self, *args, **kwargs)
         if output:
             return tt
         else: # pragma: no cover

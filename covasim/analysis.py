@@ -159,9 +159,9 @@ class AnalyzerFactory:
         elif input == fit:
             return Analyzer.snapshot(self, *args, **kwargs)
         elif input == cal:
-            return Analyzer.Calibration(self, *args, **kwargs)
+            return Analyzer.Calibration(self, args, **kwargs)
         elif input == tt:
-            return Analyzer.TransTree(self, *args, **kwargs)
+            return Analyzer.TransTree(self, args, **kwargs)
 
 
 

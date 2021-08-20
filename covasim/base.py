@@ -1164,6 +1164,27 @@ class BasePeople(FlexPretty):
         ''' Return all people as a list '''
         return list(self)
 
+    class Iterator(abc.ABC):
+        '''Iterator interface'''
+        @abc.abstractmethod
+        def iterMethod(param):
+            pass
+    
+    class container(abc.ABC):
+        '''container interface'''
+        @abc.abstractmethod
+        def getIterator(par):
+            pass
+
+    class peopleIterator(Iterator):
+        '''Iterator concrete class tailored to iterate over collection of people'''
+        def iterMethod(param):
+            return enumerate(param)
+    
+    class peopleContainer(container):
+        '''container concrete class, fetches the ietrator to avoid free access and for information hiding'''
+        def getIterator(par):
+            return peopleIterator.iterMethod(par)
 
     def from_people(self, people, resize=True):
         ''' Convert a list of people back into a People object '''
@@ -1174,7 +1195,7 @@ class BasePeople(FlexPretty):
             self._resize_arrays(new_size=pop_size)
 
         # Iterate over people -- slow!
-        for p,person in enumerate(people):
+        for p,person in peopleContainer.getIterator(people):
             for key in self.keys():
                 self[key][p] = getattr(person, key)
 
